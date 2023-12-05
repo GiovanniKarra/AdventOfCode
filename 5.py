@@ -87,11 +87,11 @@ def find_ran(rans: list[(int, int)], mapnum: int):
                 diffstop = min(ran[1] - m[1], m[2]-1)
                 toret.append((m[0] + diffstart, m[0] + diffstop))
         
-    for m in map:
-        mr = (m[1], m[1]+m[2]-1)
-        no_intersect = divide(union(no_intersect), mr)
+    # for m in map:
+    #     mr = (m[1], m[1]+m[2]-1)
+    #     no_intersect = divide(union(no_intersect), mr)
 
-    for e in no_intersect: toret.append(e)
+    # for e in no_intersect: toret.append(e)
 
     return union(toret)
 
@@ -100,8 +100,9 @@ for ran in seeds:
     val = [ran]
     for i in range(7):
         val = find_ran(val, i)
-    if (m := min(v[0] for v in val)) < minloc:
-        minloc = m
+    if len(val) > 0:
+        if (m := min([v[0] for v in val]+[9999999999999999999])) < minloc:
+            minloc = m
 
 print(minloc)
 
