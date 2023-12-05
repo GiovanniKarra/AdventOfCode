@@ -45,53 +45,62 @@ seedranges = [(int(seedranges[i]), int(seedranges[i+1])) for i in range(0, len(s
 seeds = []
 
 for pair in seedranges:
-    seeds.append(range(pair[0], pair[0]+pair[1]))
+    seeds.append((pair[0], pair[0]+pair[1]-1))
 
-def intersect(a: range, b: range):
-    return a.start < b.stop and a.stop > b.start
+def intersect(a: (int, int), b: (int, int)):
+    return a[0] <= b[1] and a[1] >= b[0]
+
+def union(a: list[(int, int)]):
+    b = []
+    for begin,end in sorted(a):
+        if b and b[-1][1] >= begin - 1:
+            b[-1][1] = max(b[-1][1], end)
+        else:
+            b.append([begin, end])
+    return [tuple(e) for e in b]
 
 
-def divide(a: list[range], b: range):
+def divide(a: list[(int, int)], b: (int, int)):
     toret = []
     for r in a:
-        if r.start <= b.start:
-            toret.append(range(r.start, b.start))
-            if r.stop >= b.stop:
-                toret.append(range(b.stop, r.stop))
-        elif r.start < b.stop:
-            if r.stop >= b.stop:
-                toret.append(range(b.stop, r.stop))
+        if r[0] < b[0]:
+            toret.append((r[0], b[0]-1))
+            if r[1] > b[1]:
+                toret.append((b[1]+1, r[1]))
+        elif r[0] < b[1]:
+            if r[1] > b[1]:
+                toret.append((b[1]+1, r[1]))
         else:
             toret.append(r)
 
-    return toret
+    return union(toret)
 
 
-def find_ran(rans: list[range], mapnum: int):
+def find_ran(rans: list[(int, int)], mapnum: int):
     toret = []
     map = maps[mapnum]
     no_intersect = rans.copy()
     for ran in rans:
         for m in map:
-            if intersect(ran, range(m[1], m[1]+m[2])):
-                diffstart = max(ran.start - m[1], 0)
-                diffstop = min(ran.stop - m[1], m[2])
-                toret.append(range(m[0] + diffstart, m[0] + diffstop))
+            if intersect(ran, (m[1], m[1]+m[2]-1)):
+                diffstart = max(ran[0] - m[1], 0)
+                diffstop = min(ran[1] - m[1], m[2]-1)
+                toret.append((m[0] + diffstart, m[0] + diffstop))
         
     for m in map:
-        mr = range(m[1], m[1]+m[2])
-        no_intersect = divide(no_intersect, mr)
+        mr = (m[1], m[1]+m[2]-1)
+        no_intersect = divide(union(no_intersect), mr)
 
     for e in no_intersect: toret.append(e)
 
-    return toret
+    return union(toret)
 
 minloc = 999999999999999999999999999999999
 for ran in seeds:
     val = [ran]
     for i in range(7):
         val = find_ran(val, i)
-    if (m := min(v.start for v in val)) < minloc:
+    if (m := min(v[0] for v in val)) < minloc:
         minloc = m
 
 print(minloc)
