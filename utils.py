@@ -13,3 +13,6 @@ def printretarg(func):
         return val
 
     return wrapper
+
+def grid_to_string(grid):
+    return "\n".join(["".join(line) for line in grid])
