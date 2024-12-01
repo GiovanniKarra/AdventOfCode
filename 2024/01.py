@@ -25,5 +25,5 @@ def part2():
 	score = similarity @ list1
 	print(int(score))
 
-# part1()
+part1()
 part2()
