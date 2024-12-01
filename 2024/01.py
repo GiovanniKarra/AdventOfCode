@@ -16,8 +16,6 @@ def part1():
 
 def part2():
 	lines = input_str.split("\n")
-	for line in lines:
-		if len(line.split("   ")) < 2: print(line)
 	list1, list2 = np.array([(int(x), int(y))
 				   for x, y in [line.split("   ") for line in lines]]).transpose()
 	list1.sort(); list2.sort()
