@@ -9,7 +9,7 @@ def part1():
 	res = 0
 	for match in matches:
 		nums = re.findall(r"\d{0,3}", match)
-		res += product(list(map(int, filter(lambda n: n != "", nums))))
+		res += product(map(int, filter(lambda n: n != "", nums)))
 	print(res)
 
 def part2():
@@ -26,7 +26,7 @@ def part2():
 			continue
 		elif enabled:
 			nums = re.findall(r"\d{0,3}", match)
-			res += product(list(map(int, filter(lambda n: n != "", nums))))
+			res += product(map(int, filter(lambda n: n != "", nums)))
 	print(res)
 
 part1()
