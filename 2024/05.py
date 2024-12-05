@@ -33,12 +33,9 @@ def part2():
 	for update in updates:
 		correct = True
 		for i in range(len(update)):
-			for _ in range(100):
+			for _ in range(10):
 				for j in range(i, len(update)):
-					# if update[j] in before_dict[update[i]]:
-					# 	break
 					if update[j] in after_dict[update[i]]:
-						# print(f"swapped {update[i]} and {update[j]}")
 						correct = False
 						tmp = update[i]
 						update[i] = update[j]
@@ -46,7 +43,6 @@ def part2():
 		if not correct:
 			middle_values.append(update[len(update)//2])
 	
-	# print(middle_values)
 	print(sum(middle_values))
 
 part1()
