@@ -9,9 +9,9 @@ def printret(func):
     return wrapper
 
 def printretarg(func):
-    def wrapper(*args):
-        val = func(*args)
-        print(f"args : {args}, ret : {val}")
+    def wrapper(*args, **kwargs):
+        val = func(*args, **kwargs)
+        print(f"args : {args}, " + f"kwargs : {kwargs}, "*int(len(kwargs) > 0) + f"ret : {val}")
         return val
 
     return wrapper
