@@ -1,4 +1,5 @@
 from utils import *
+from functools import cache
 
 input_str = open("input.txt", "r").read().strip("\n")
 stones = list(map(int, input_str.split(" ")))
@@ -19,6 +20,19 @@ def blink(stone, times):
 			stones.insert(index+i, val)
 	return stones
 
+@cache
+def recursive_blink(stone, times):
+	if times == 0: return 1
+	
+	if stone == 0:
+		return recursive_blink(1, times-1)
+	elif len((s := "%d"%stone))%2 == 0:
+		return recursive_blink(int(s[:len(s)//2]), times-1)+\
+			recursive_blink(int(s[len(s)//2:]), times-1)
+	else:
+		return recursive_blink(stone*2024, times-1)
+
+
 def part1():
 	final = []
 	for stone in stones:
@@ -26,10 +40,10 @@ def part1():
 	print(len(final))
 
 def part2():
-	final = []
-	for stone in [0]:
-		final += blink(stone, 10)
-	print(len(final))
+	final = 0
+	for stone in stones:
+		final += recursive_blink(stone, 75)
+	print(final)
 
 part1()
 part2()
