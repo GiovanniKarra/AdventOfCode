@@ -19,6 +19,11 @@ def printretarg(func):
 def grid_to_string(grid):
     return "\n".join(["".join(line) for line in grid])
 
+def to_grid(string):
+    grid = [list(line) for line in string.split("\n")]
+    m, n = len(grid), len(grid[0])
+    return grid, m, n
+
 def product(l):
     p = 1
     for elem in l:
