@@ -14,7 +14,7 @@ def get_max_design_length(designs):
 	return max
 
 @cache
-def find_matched_designs(towel, max_length):
+def find_matched_designs(towel, max_length, part=1):
 	to_check = []
 	max_length = min(max_length, len(towel))
 	if max_length == 0: return True
@@ -22,7 +22,8 @@ def find_matched_designs(towel, max_length):
 	for i in range(1, max_length+1):
 		if towel[:i] in designs:
 			to_check.append(towel[i:])
-	return any([find_matched_designs(t, max_length) for t in to_check])
+	func = any if part == 1 else sum
+	return func(find_matched_designs(t, max_length, part=part) for t in to_check)
 
 def part1():
 	max_length = get_max_design_length(designs)
@@ -30,7 +31,9 @@ def part1():
 	print(possible)
 
 def part2():
-	pass
+	max_length = get_max_design_length(designs)
+	possible = sum(find_matched_designs(t, max_length, part=2) for t in towels)
+	print(possible)
 
 part1()
 part2()
