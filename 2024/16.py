@@ -75,10 +75,6 @@ def part2():
 		if elem in visited_intern: continue
 		visited.add(elem[0])
 		visited_intern.add(elem)
-		print()
-		print(elem)
-		print(parents[elem])
-		print()
 		for parent in parents[elem]:
 			queue.append(parent)
 	print(len(visited)+1)
