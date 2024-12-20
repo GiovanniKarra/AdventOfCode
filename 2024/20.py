@@ -1,5 +1,5 @@
 from utils import *
-from collections import defaultdict, deque
+from collections import defaultdict
 import heapq as hq
 
 input_str = open("input.txt", "r").read().strip("\n")

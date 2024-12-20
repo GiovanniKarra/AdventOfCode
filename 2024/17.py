@@ -55,15 +55,34 @@ def part1():
 
 def part2():
 	registers, program = get_parsed_data(input_str)
-	A = 99999999999999
-	while True:
+	init = 100000000000000
+	init = 0
+	out = []
+	while len(out) < len(program):
 		out = []
-		run_program([A, 0, 0], program, out)
-		if len(out) > len(program): exit(1)
-		if out == program: break
-		print(f"{A = }: {out}")
-		A += 2
-		if A % 1000 == 0: print(A)
+		init += 2
+		run_program([init, 0, 0], program, out)
+	print(f"{init = }")
+	indices = [[] for _ in range(len(program))]
+	for i, op in enumerate(program):
+		if i == 6: break
+		A = init
+		while len(indices[i]) < 3:
+			init_op = out[i]
+			out = []
+			run_program([A, 0, 0], program, out)
+			if op == out[i] and op != init_op:
+				indices[i].append(A)
+				# print(f"{op = }, {A = }")
+			A += 2
+	for k, ind in enumerate(indices):
+		print(f"{program[k] = }: ", end="")
+		print(f"{ind[0]} + ", end="")
+		for i in range(len(ind)-1):
+			diff = ind[i+1]-ind[i]
+			print("%d "%diff, end="")
+		print()
+
 	print(A)
 
 part1()
